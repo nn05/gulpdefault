@@ -4,7 +4,8 @@ var plumber             = require('gulp-plumber');
 var notify              = require("gulp-notify");
 var sourcemaps          = require('gulp-sourcemaps');
 var buble               = require('gulp-buble');
-var include            = require('gulp-include');
+var include             = require('gulp-include');
+var uglify              = require('gulp-uglify');
 gulp.task('js', function () {
   return gulp.src(cnf.src.js)
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
@@ -12,16 +13,13 @@ gulp.task('js', function () {
     .pipe(buble())
     .pipe(include({
         extensions: "js",
-        hardFail: true,
-        includePaths: [
-          __dirname + "/bower_components",
-          __dirname + "/src/js"
-        ]
+        hardFail: true
       }))
+    .pipe(uglify())
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(cnf.dist.js));
 });
  
 gulp.task('js:watch', function () {
-  gulp.watch('./src/js/**/*.*', ['js']);
+  gulp.watch([cnf.src.js, 'src/js/components/**/*.*'], ['js']);
 });
