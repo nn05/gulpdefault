@@ -1,2 +1,2 @@
-//=require components\1.js
+//=require components/1.js
 alert('hello');
